@@ -30,6 +30,7 @@ describe('Issue delete', () => {
           .contains('button', 'Cancel')
           .click()
           .should('not.exist'); 
+          cy.get('[data-testid="icon:close"]').first().click();  
         cy.get('[data-testid="board-list:backlog"]').should('be.visible');
         cy.contains(issueTitle).should('be.visible');
       });
