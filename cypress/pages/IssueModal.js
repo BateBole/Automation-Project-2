@@ -1,5 +1,9 @@
+const comment = 'TEST_COMMENT'; 
+const previousComment = 'An old silent pond...';
+
+
 class IssueModal {
-    constructor() {
+        constructor() {
         this.submitButton = 'button[type="submit"]';
         this.issueModal = '[data-testid="modal:issue-create"]';
         this.issueDetailModal = '[data-testid="modal:issue-details"]';
@@ -14,6 +18,13 @@ class IssueModal {
         this.cancelDeletionButtonName = "Cancel";
         this.confirmationPopup = '[data-testid="modal:confirm"]';
         this.closeDetailModalButton = '[data-testid="icon:close"]';
+        this.addComment = 'textarea[placeholder="Add a comment..."]';
+        this.commentField = 'Add a comment...';
+        this.saveButtonName = 'Save';
+        this.issueComment = '[data-testid="issue-comment"]';
+        this.editButton = 'Edit';
+        this.deleteButtonComment = 'Delete';
+        this.confirmDeleteComment = 'Delete comment';
     }
 
     getIssueModal() {
@@ -53,6 +64,38 @@ class IssueModal {
             cy.get(this.submitButton).click();
         });
     }
+
+    addNewComment() {
+        this.getIssueDetailModal().within(() => {
+        cy.contains(this.commentField).click();
+        cy.get(this.addComment).type(comment);
+        cy.contains('button', this.saveButtonName).click().should('not.exist');
+        });
+    }
+    verifyComment() {
+        this.getIssueDetailModal().within(() => {
+        cy.contains(this.commentField).should('exist');
+        cy.get(this.issueComment).should('contain', comment);
+    });
+    }
+   
+    editComment() {
+        this.getIssueDetailModal().within(() => {
+        cy.get(this.issueComment).first().contains(this.editButton).click().should('not.exist');
+        cy.get(this.addComment).should('contain', previousComment).clear().type(comment);
+        cy.contains('button', this.saveButtonName).click().should('not.exist');
+        cy.get(this.issueComment).should('contain', this.editButton).and('contain', comment);
+     });
+  }
+
+    deleteComment() {
+        this.getIssueDetailModal()   
+        .find(this.issueComment).contains(this.deleteButtonComment).click();
+        cy.get(this.confirmationPopup).contains('button', this.confirmDeleteComment).click().should('not.exist');
+        this.getIssueDetailModal()
+        .find(this.issueComment)
+        .should('not.exist');
+  }
 
     ensureIssueIsCreated(expectedAmountIssues, issueDetails) {
         cy.get(this.issueModal).should('not.exist');
