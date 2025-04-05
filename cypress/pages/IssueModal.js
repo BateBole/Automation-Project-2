@@ -25,6 +25,13 @@ class IssueModal {
         this.editButton = 'Edit';
         this.deleteButtonComment = 'Delete';
         this.confirmDeleteComment = 'Delete comment';
+        this.numberOfHours = '.sc-dxgOiQ.HrhWu';
+        this.iconStopWatch = '[data-testid="icon:stopwatch"]'
+        this.timeTrackingModal = '[data-testid="modal:tracking"]' 
+        this.saveDescription = '.sc-bwzfXH.dIxFno'
+        this.timeEstimation = '.sc-rBLzX.irwmBe'
+        this.placeholderNumber = 'input[placeholder="Number"]'
+        
     }
 
     getIssueModal() {
